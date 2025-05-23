@@ -32,3 +32,8 @@ export const recomendarDieta = async (requisicao: any) => {
   console.log("Resposta da API:", resp.data);
   return resp.data;
 };
+
+export const gerarReceitasIA = async (req: any) => {
+  const resp = await axios.post(`${API_URL}/receitas-ia`, req); // ou use o URL externo se não for proxy
+  return resp.data;
+};
