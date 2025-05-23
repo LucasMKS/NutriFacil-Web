@@ -115,7 +115,7 @@ export default function DietaPage() {
     setResultado(null);
     // Salva campos repetidos
     saveResult("peso", peso);
-    saveResult("altura", (Number(getResult("altura")) / 100).toString());
+    saveResult("altura", altura);
     saveResult("idade", idade);
     saveResult("sexo", sexo);
     saveResult("objetivo", objetivo);
@@ -136,7 +136,7 @@ export default function DietaPage() {
       const req = {
         tipoDieta,
         peso: Number(peso),
-        altura: Number(altura),
+        altura: Number(altura) * 100,
         idade: Number(idade),
         sexo,
         objetivo,
@@ -175,12 +175,13 @@ export default function DietaPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="altura">Altura (cm)</Label>
+                  <Label htmlFor="altura">Altura</Label>
                   <Input
                     id="altura"
                     type="number"
                     value={altura}
                     onChange={(e) => setAltura(e.target.value)}
+                    placeholder="Ex: 1.75"
                     className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
                   />
                 </div>

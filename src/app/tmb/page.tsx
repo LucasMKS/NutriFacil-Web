@@ -25,9 +25,7 @@ export default function TMBPage() {
 
   useEffect(() => {
     setPeso(getResult("peso") || "");
-    setAltura(
-      getResult("altura") ? (Number(getResult("altura")) * 100).toString() : ""
-    );
+    setAltura(getResult("altura") || "");
     setIdade(getResult("idade") || "");
     setSexo(getResult("sexo") || "");
   }, []);
@@ -38,7 +36,7 @@ export default function TMBPage() {
     try {
       const data = await calcularTmb(
         Number(peso),
-        Number(altura),
+        Number(altura) * 100,
         Number(idade),
         sexo
       );
@@ -46,7 +44,7 @@ export default function TMBPage() {
       saveResult("tmb_result", data.tmb);
       // Salvar entradas
       saveResult("peso", peso);
-      saveResult("altura", (Number(getResult("altura")) / 100).toString());
+      saveResult("altura", altura);
       saveResult("idade", idade);
       saveResult("sexo", sexo);
     } catch (err) {
@@ -75,13 +73,13 @@ export default function TMBPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="altura">Altura (cm)</Label>
+                <Label htmlFor="altura">Altura</Label>
                 <Input
                   id="altura"
                   type="number"
                   value={altura}
                   onChange={(e) => setAltura(e.target.value)}
-                  placeholder="Ex: 175"
+                  placeholder="Ex: 1.75"
                   className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
                 />
               </div>
