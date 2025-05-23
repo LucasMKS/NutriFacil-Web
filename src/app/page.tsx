@@ -254,25 +254,6 @@ export default function Home() {
                     <div className="text-2xl font-bold">
                       {agua.toFixed(2)} litros/dia
                     </div>
-                    <div className="mt-1">
-                      <Badge
-                        color={
-                          agua >= 1.9
-                            ? "green"
-                            : agua >= 1.5
-                            ? "yellow"
-                            : agua < 1.5
-                            ? "red"
-                            : "gray"
-                        }
-                      >
-                        {agua >= 1.9
-                          ? "Ótimo"
-                          : agua >= 1.5
-                          ? "Atenção"
-                          : "Baixo"}
-                      </Badge>
-                    </div>
                   </div>
                 ) : (
                   <div className="text-gray-400">Preencha seu consumo!</div>
