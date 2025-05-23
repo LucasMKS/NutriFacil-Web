@@ -27,13 +27,8 @@ export const calcularAgua = async (peso: number) => {
   return resp.data;
 };
 
-export const recomendarDieta = async (
-  tipoDieta: string,
-  restricoes: string[]
-) => {
-  const resp = await axios.post(`${API_URL}/dieta/recomendar`, {
-    tipoDieta,
-    restricoes,
-  });
+export const recomendarDieta = async (requisicao: any) => {
+  const resp = await axios.post(`${API_URL}/dieta/recomendar`, requisicao);
+  console.log("Resposta da API:", resp.data);
   return resp.data;
 };
