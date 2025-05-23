@@ -95,9 +95,7 @@ export default function DietaPage() {
   // Carrega do localStorage ao iniciar
   useEffect(() => {
     setPeso(getLocalNumber("peso"));
-    setAltura(
-      getResult("altura") ? (Number(getResult("altura")) * 100).toString() : ""
-    );
+    setAltura(getResult("altura") || "");
     setIdade(getLocalNumber("idade"));
     setSexo(getResult("sexo") || "");
     setTipoDieta(getResult("tipoDieta") || "");
