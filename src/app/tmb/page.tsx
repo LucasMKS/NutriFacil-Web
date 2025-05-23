@@ -46,7 +46,7 @@ export default function TMBPage() {
       saveResult("tmb_result", data.tmb);
       // Salvar entradas
       saveResult("peso", peso);
-      saveResult("altura", altura);
+      saveResult("altura", (Number(getResult("altura")) / 100).toString());
       saveResult("idade", idade);
       saveResult("sexo", sexo);
     } catch (err) {

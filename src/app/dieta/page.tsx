@@ -115,7 +115,7 @@ export default function DietaPage() {
     setResultado(null);
     // Salva campos repetidos
     saveResult("peso", peso);
-    saveResult("altura", altura);
+    saveResult("altura", (Number(getResult("altura")) / 100).toString());
     saveResult("idade", idade);
     saveResult("sexo", sexo);
     saveResult("objetivo", objetivo);
