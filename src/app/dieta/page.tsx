@@ -46,8 +46,8 @@ const PROTEINAS_OPCOES = [
   "Grão de bico",
   "Feijão",
   "Lentilha",
-  "Whey Protein",
 ];
+
 const LEGUMES_OPCOES = [
   "Cenoura",
   "Abobrinha",
@@ -159,11 +159,11 @@ export default function DietaPage() {
     <>
       <Navbar active="/dieta" />
       <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-fundo-claro dark:bg-verde-escuro">
-        <Card className="max-w-xl w-full shadow-md shadow-zinc-900 p-6 dark:bg-verde-mais bg-fundo-verde">
+        <Card className="max-w-xl w-full shadow-md p-4 sm:p-6 dark:bg-verde-mais bg-fundo-verde">
           <CardContent>
             <h1 className="text-2xl font-bold mb-6">Recomendação de Dieta</h1>
             <div className="space-y-5">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="peso">Peso (kg)</Label>
                   <Input
@@ -207,7 +207,7 @@ export default function DietaPage() {
                   </Select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Tipo de Dieta</Label>
                   <Select value={tipoDieta} onValueChange={setTipoDieta}>
@@ -240,7 +240,7 @@ export default function DietaPage() {
                 </div>
               </div>
               {/* Preferências por categoria */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <MultiSelect
                   label="Preferências de Proteínas"
                   options={PROTEINAS_OPCOES}
@@ -309,7 +309,7 @@ export default function DietaPage() {
                   </div>
                   <ul className="list-disc list-inside">
                     {resultado.length > 0 ? (
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                         {resultado.slice(0, 20).map((item, idx) => (
                           <div
                             key={idx}
