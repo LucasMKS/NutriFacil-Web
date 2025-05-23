@@ -1,12 +1,12 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { calcularImc } from "@/lib/api";
-import { saveResult } from "@/lib/storage";
+import { saveResult, getResult } from "@/lib/storage";
 
 export default function IMCPage() {
   const [peso, setPeso] = useState("");
@@ -17,6 +17,11 @@ export default function IMCPage() {
   } | null>(null);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setPeso(getResult("peso") || "");
+    setAltura(getResult("altura") || "");
+  }, []);
+
   const handleCalcular = async () => {
     setLoading(true);
     setResultado(null);
@@ -24,6 +29,9 @@ export default function IMCPage() {
       const data = await calcularImc(Number(peso), Number(altura));
       setResultado(data);
       saveResult("imc_result", data);
+      // Salva entradas
+      saveResult("peso", peso);
+      saveResult("altura", altura);
     } catch (err) {
       alert("Erro ao conectar com o backend!");
     }
@@ -33,8 +41,8 @@ export default function IMCPage() {
   return (
     <>
       <Navbar active="/imc" />
-      <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50">
-        <Card className="max-w-md w-full shadow-xl p-6">
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-fundo-claro dark:bg-verde-escuro">
+        <Card className="max-w-md w-full shadow-md shadow-zinc-900 p-6 dark:bg-verde-mais bg-fundo-verde">
           <CardContent>
             <h1 className="text-2xl font-bold mb-6">Cálculo de IMC</h1>
             <div className="space-y-4">
@@ -46,6 +54,7 @@ export default function IMCPage() {
                   value={peso}
                   onChange={(e) => setPeso(e.target.value)}
                   placeholder="Ex: 70"
+                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
                 />
               </div>
               <div>
@@ -56,6 +65,7 @@ export default function IMCPage() {
                   value={altura}
                   onChange={(e) => setAltura(e.target.value)}
                   placeholder="Ex: 1.75"
+                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
                 />
               </div>
               <Button
