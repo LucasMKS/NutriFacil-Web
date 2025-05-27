@@ -3,17 +3,41 @@ import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+import { CampoInput } from "@/components/ui/CampoInput";
+import { CampoSelect } from "@/components/ui/CampoSelect";
 import { calcularTmb } from "@/lib/api";
 import { saveResult, getResult } from "@/lib/storage";
+
+function validarDados(
+  peso: string,
+  altura: string,
+  idade: string,
+  sexo: string
+) {
+  const erros: string[] = [];
+
+  const pesoNum = Number(peso);
+  const alturaNum = Number(altura);
+  const idadeNum = Number(idade);
+
+  if (!peso || pesoNum < 20 || pesoNum > 300) {
+    erros.push("Peso deve estar entre 20kg e 300kg.");
+  }
+
+  if (!altura || alturaNum < 100 || alturaNum > 250) {
+    erros.push("Altura deve estar entre 100cm e 250cm.");
+  }
+
+  if (!idade || idadeNum < 5 || idadeNum > 120) {
+    erros.push("Idade deve estar entre 5 e 120 anos.");
+  }
+
+  if (!sexo) {
+    erros.push("Selecione o sexo.");
+  }
+
+  return erros;
+}
 
 export default function TMBPage() {
   const [peso, setPeso] = useState("");
@@ -31,6 +55,13 @@ export default function TMBPage() {
   }, []);
 
   const handleCalcular = async () => {
+    const erros = validarDados(peso, altura, idade, sexo);
+
+    if (erros.length > 0) {
+      alert(erros.join("\n"));
+      return;
+    }
+
     setLoading(true);
     setResultado(null);
     try {
@@ -61,51 +92,38 @@ export default function TMBPage() {
           <CardContent>
             <h1 className="text-2xl font-bold mb-6">Cálculo de TMB</h1>
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="peso">Peso (kg)</Label>
-                <Input
-                  id="peso"
-                  type="number"
-                  value={peso}
-                  onChange={(e) => setPeso(e.target.value)}
-                  placeholder="Ex: 70"
-                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                />
-              </div>
-              <div>
-                <Label htmlFor="altura">Altura</Label>
-                <Input
-                  id="altura"
-                  type="number"
-                  value={altura}
-                  onChange={(e) => setAltura(e.target.value)}
-                  placeholder="Ex: 1.75"
-                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                />
-              </div>
-              <div>
-                <Label htmlFor="idade">Idade (anos)</Label>
-                <Input
-                  id="idade"
-                  type="number"
-                  value={idade}
-                  onChange={(e) => setIdade(e.target.value)}
-                  placeholder="Ex: 25"
-                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                />
-              </div>
-              <div>
-                <Label htmlFor="sexo">Sexo</Label>
-                <Select value={sexo} onValueChange={setSexo}>
-                  <SelectTrigger className="w-full dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800">
-                    <SelectValue placeholder="Selecione o sexo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="M">Masculino</SelectItem>
-                    <SelectItem value="F">Feminino</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <CampoInput
+                id="peso"
+                label="Peso (kg)"
+                value={peso}
+                onChange={(e) => setPeso(e.target.value)}
+                placeholder="Ex: 70"
+              />
+              <CampoInput
+                id="altura"
+                label="Altura (m)"
+                value={altura}
+                onChange={(e) => setAltura(e.target.value)}
+                placeholder="Ex: 1.75"
+              />
+              <CampoInput
+                id="idade"
+                label="Idade (anos)"
+                value={idade}
+                onChange={(e) => setIdade(e.target.value)}
+                placeholder="Ex: 25"
+              />
+              <CampoSelect
+                id="sexo"
+                label="Sexo"
+                value={sexo}
+                onChange={setSexo}
+                placeholder="Selecione o sexo"
+                options={[
+                  { label: "Masculino", value: "M" },
+                  { label: "Feminino", value: "F" },
+                ]}
+              />
               <Button
                 onClick={handleCalcular}
                 disabled={loading || !peso || !altura || !idade || !sexo}

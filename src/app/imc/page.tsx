@@ -3,8 +3,7 @@ import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { CampoInput } from "@/components/ui/CampoInput";
 import { calcularImc } from "@/lib/api";
 import { saveResult, getResult } from "@/lib/storage";
 
@@ -46,28 +45,20 @@ export default function IMCPage() {
           <CardContent>
             <h1 className="text-2xl font-bold mb-6">Cálculo de IMC</h1>
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="peso">Peso (kg)</Label>
-                <Input
-                  id="peso"
-                  type="number"
-                  value={peso}
-                  onChange={(e) => setPeso(e.target.value)}
-                  placeholder="Ex: 70"
-                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                />
-              </div>
-              <div>
-                <Label htmlFor="altura">Altura (m)</Label>
-                <Input
-                  id="altura"
-                  type="number"
-                  value={altura}
-                  onChange={(e) => setAltura(e.target.value)}
-                  placeholder="Ex: 1.75"
-                  className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                />
-              </div>
+              <CampoInput
+                id="peso"
+                label="Peso (kg)"
+                value={peso}
+                onChange={(e) => setPeso(e.target.value)}
+                placeholder="Ex: 70"
+              />
+              <CampoInput
+                id="altura"
+                label="Altura (m)"
+                value={altura}
+                onChange={(e) => setAltura(e.target.value)}
+                placeholder="Ex: 1.75"
+              />
               <Button
                 onClick={handleCalcular}
                 disabled={loading || !peso || !altura}

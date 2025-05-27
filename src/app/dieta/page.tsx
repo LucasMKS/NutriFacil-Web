@@ -4,15 +4,9 @@ import { useState, useEffect } from "react";
 import { MultiSelect } from "@/components/MultiSelect";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+import { CampoInput } from "@/components/ui/CampoInput";
+import { CampoSelect } from "@/components/ui/CampoSelect";
 import { recomendarDieta } from "@/lib/api";
 import { saveResult, getResult } from "@/lib/storage";
 
@@ -68,6 +62,37 @@ function getLocalNumber(key: string) {
   return value ? String(value) : "";
 }
 
+function validarDados(
+  peso: string,
+  altura: string,
+  idade: string,
+  sexo: string
+) {
+  const erros: string[] = [];
+
+  const pesoNum = Number(peso);
+  const alturaNum = Number(altura);
+  const idadeNum = Number(idade);
+
+  if (!peso || pesoNum < 20 || pesoNum > 300) {
+    erros.push("Peso deve estar entre 20kg e 300kg.");
+  }
+
+  if (!altura || alturaNum < 100 || alturaNum > 250) {
+    erros.push("Altura deve estar entre 100cm e 250cm.");
+  }
+
+  if (!idade || idadeNum < 5 || idadeNum > 120) {
+    erros.push("Idade deve estar entre 5 e 120 anos.");
+  }
+
+  if (!sexo) {
+    erros.push("Selecione o sexo.");
+  }
+
+  return erros;
+}
+
 export default function DietaPage() {
   // Repetidos
   const [peso, setPeso] = useState("");
@@ -109,6 +134,13 @@ export default function DietaPage() {
   }, []);
 
   const handleRecomendar = async () => {
+    const erros = validarDados(peso, altura, idade, sexo);
+
+    if (erros.length > 0) {
+      alert(erros.join("\n"));
+      return;
+    }
+
     setLoading(true);
     setResultado(null);
     // Salva campos repetidos
@@ -162,81 +194,56 @@ export default function DietaPage() {
             <h1 className="text-2xl font-bold mb-6">Recomendação de Dieta</h1>
             <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="peso">Peso (kg)</Label>
-                  <Input
-                    id="peso"
-                    type="number"
-                    value={peso}
-                    onChange={(e) => setPeso(e.target.value)}
-                    className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="altura">Altura</Label>
-                  <Input
-                    id="altura"
-                    type="number"
-                    value={altura}
-                    onChange={(e) => setAltura(e.target.value)}
-                    placeholder="Ex: 1.75"
-                    className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="idade">Idade (anos)</Label>
-                  <Input
-                    id="idade"
-                    type="number"
-                    value={idade}
-                    onChange={(e) => setIdade(e.target.value)}
-                    className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
-                  />
-                </div>
-                <div>
-                  <Label>Sexo</Label>
-                  <Select value={sexo} onValueChange={setSexo}>
-                    <SelectTrigger className="w-full dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800">
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="M">Masculino</SelectItem>
-                      <SelectItem value="F">Feminino</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <CampoInput
+                  id="peso"
+                  label="Peso (kg)"
+                  value={peso}
+                  onChange={(e) => setPeso(e.target.value)}
+                  placeholder="Ex: 70"
+                />
+                <CampoInput
+                  id="altura"
+                  label="Altura (m)"
+                  value={altura}
+                  onChange={(e) => setAltura(e.target.value)}
+                  placeholder="Ex: 1.75"
+                />
+                <CampoInput
+                  id="idade"
+                  label="Idade (anos)"
+                  value={idade}
+                  onChange={(e) => setIdade(e.target.value)}
+                  placeholder="Ex: 30"
+                />
+                <CampoSelect
+                  id="sexo"
+                  label="Sexo"
+                  value={sexo}
+                  onChange={setSexo}
+                  placeholder="Selecione o sexo"
+                  options={[
+                    { label: "Masculino", value: "M" },
+                    { label: "Feminino", value: "F" },
+                  ]}
+                />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label>Tipo de Dieta</Label>
-                  <Select value={tipoDieta} onValueChange={setTipoDieta}>
-                    <SelectTrigger className="w-full dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800">
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TIPOS_DIETA.map((op) => (
-                        <SelectItem key={op.value} value={op.value}>
-                          {op.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Objetivo</Label>
-                  <Select value={objetivo} onValueChange={setObjetivo}>
-                    <SelectTrigger className="w-full dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800">
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {OBJETIVOS.map((op) => (
-                        <SelectItem key={op.value} value={op.value}>
-                          {op.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <CampoSelect
+                  id="tipoDieta"
+                  label="Tipo de Dieta"
+                  value={tipoDieta}
+                  onChange={setTipoDieta}
+                  placeholder="Selecione o tipo de dieta"
+                  options={TIPOS_DIETA}
+                />
+                <CampoSelect
+                  id="objetivo"
+                  label="Objetivo"
+                  value={objetivo}
+                  onChange={setObjetivo}
+                  placeholder="Selecione o objetivo"
+                  options={OBJETIVOS}
+                />
               </div>
               {/* Preferências por categoria */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -296,7 +303,15 @@ export default function DietaPage() {
               </div>
               <Button
                 onClick={handleRecomendar}
-                disabled={loading || !tipoDieta}
+                disabled={
+                  loading ||
+                  !tipoDieta ||
+                  !peso ||
+                  !altura ||
+                  !idade ||
+                  !sexo ||
+                  !objetivo
+                }
                 className="w-full"
               >
                 {loading ? "Calculando..." : "Obter recomendações"}
