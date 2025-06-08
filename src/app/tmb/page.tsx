@@ -20,16 +20,16 @@ function validarDados(
   const alturaNum = Number(altura);
   const idadeNum = Number(idade);
 
-  if (!peso || pesoNum < 20 || pesoNum > 300) {
+  if (!peso || pesoNum < 10 || pesoNum > 300) {
     erros.push("Peso deve estar entre 20kg e 300kg.");
   }
 
-  if (!altura || alturaNum < 100 || alturaNum > 250) {
-    erros.push("Altura deve estar entre 100cm e 250cm.");
+  if (!altura || alturaNum < 0.10 || alturaNum > 2.50) {
+    erros.push("Altura deve estar entre 0.10m e 2.50m.");
   }
 
-  if (!idade || idadeNum < 5 || idadeNum > 120) {
-    erros.push("Idade deve estar entre 5 e 120 anos.");
+  if (!idade || idadeNum < 2 || idadeNum > 120) {
+    erros.push("Idade deve estar entre 2 e 120 anos.");
   }
 
   if (!sexo) {
