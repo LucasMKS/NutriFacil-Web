@@ -24,8 +24,8 @@ function validarDados(
     erros.push("Peso deve estar entre 20kg e 300kg.");
   }
 
-  if (!altura || alturaNum < 100 || alturaNum > 250) {
-    erros.push("Altura deve estar entre 100cm e 250cm.");
+  if (!altura || alturaNum < 0.5 || alturaNum > 2.5) {
+    erros.push("Altura deve estar entre 0.5m e 2.5m.");
   }
 
   if (!idade || idadeNum < 5 || idadeNum > 120) {
@@ -104,6 +104,7 @@ export default function TMBPage() {
                 label="Altura (m)"
                 value={altura}
                 onChange={(e) => setAltura(e.target.value)}
+                step="0.01"
                 placeholder="Ex: 1.75"
               />
               <CampoInput
