@@ -105,6 +105,7 @@ export default function TMBPage() {
                 value={altura}
                 onChange={(e) => setAltura(e.target.value)}
                 placeholder="Ex: 1.75"
+                step="0.01"
               />
               <CampoInput
                 id="idade"

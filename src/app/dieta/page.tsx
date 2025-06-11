@@ -206,6 +206,7 @@ export default function DietaPage() {
                   label="Altura (m)"
                   value={altura}
                   onChange={(e) => setAltura(e.target.value)}
+                  step="0.01"
                   placeholder="Ex: 1.75"
                 />
                 <CampoInput

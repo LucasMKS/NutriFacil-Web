@@ -8,6 +8,7 @@ interface CampoInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: string;
+  step?: string;
 }
 
 export function CampoInput({
@@ -17,6 +18,7 @@ export function CampoInput({
   onChange,
   placeholder,
   type = "number",
+  step,
 }: CampoInputProps) {
   return (
     <div>
@@ -27,6 +29,7 @@ export function CampoInput({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        step={step}
         className="dark:bg-verde-escuro shadow-md shadow-zinc-800 border border-zinc-600 dark:border-zinc-800"
       />
     </div>
